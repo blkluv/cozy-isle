@@ -1,0 +1,226 @@
+/* ===== Cozy Isle HUD ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --ink: #5b4632;
+  --ink-soft: #8a7158;
+  --cream: #fffdf6;
+  --paper: rgba(255, 253, 246, 0.94);
+  --accent: #f2a65a;
+  --green: #6fbf5a;
+  --shadow: 0 4px 14px rgba(90, 60, 20, 0.18), 0 1px 3px rgba(90, 60, 20, 0.12);
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: "Baloo 2", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Comic Sans MS", "Chalkboard SE", sans-serif;
+  color: var(--ink);
+  background: #9fd9ef;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+#scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+#hud { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+#hud > * { pointer-events: auto; }
+.hidden { display: none !important; }
+
+/* ---- status pill ---- */
+.pill {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 14px;
+  background: var(--paper); border-radius: 999px;
+  padding: 8px 22px; box-shadow: var(--shadow);
+  font-weight: 700; font-size: 19px; white-space: nowrap;
+}
+.stat { display: flex; align-items: center; gap: 6px; }
+.stat .ico { font-size: 16px; }
+.sep { width: 1px; height: 20px; background: rgba(91, 70, 50, 0.15); }
+.ebar {
+  width: 92px; height: 14px; border-radius: 999px;
+  background: #efe4cf; overflow: hidden; display: inline-block;
+  box-shadow: inset 0 1px 3px rgba(90,60,20,.18);
+}
+#efill {
+  display: block; height: 100%; width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffd23e, #ff9f43);
+  transition: width .4s ease;
+}
+
+/* ---- tasks card ---- */
+#tasks-card {
+  position: absolute; top: 14px; right: 14px; width: 240px;
+  background: var(--paper); border-radius: 18px;
+  box-shadow: var(--shadow); padding: 12px 14px;
+}
+#tasks-head { font-weight: 800; font-size: 16px; margin-bottom: 8px; color: var(--ink); }
+#tasks-list { list-style: none; }
+#tasks-list li {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 2px; font-size: 15px; font-weight: 600; color: var(--ink);
+}
+#tasks-list li .box {
+  flex: 0 0 16px; width: 16px; height: 16px;
+  border: 2px solid #cbb593; border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; color: #fff; background: #fff;
+  transition: background .25s, border-color .25s;
+}
+#tasks-list li.done .box { background: var(--green); border-color: var(--green); }
+#tasks-list li.done .label { color: #b3a289; text-decoration: line-through; }
+#tasks-list li.flash { animation: taskFlash .5s ease; }
+@keyframes taskFlash { 0% { background: #fff3c9; } 100% { background: transparent; } }
+
+/* ---- villager bar ---- */
+#villager-bar {
+  position: absolute; left: 14px; bottom: 14px;
+  display: flex; gap: 10px;
+}
+.vchip {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  width: 58px;
+}
+.vface {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--paper); box-shadow: var(--shadow);
+  border: 3px solid var(--ring, #ddd);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; line-height: 1;
+  transition: transform .2s;
+}
+.vchip.met .vface { transform: scale(1.06); }
+.vname {
+  font-size: 12px; font-weight: 700; color: var(--ink);
+  background: var(--paper); padding: 0 8px; border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+
+/* ---- round buttons ---- */
+#round-btns {
+  position: absolute; right: 14px; bottom: 14px;
+  display: flex; gap: 10px;
+}
+.rbtn {
+  width: 46px; height: 46px; border-radius: 50%; border: none;
+  background: var(--c, #fff); box-shadow: var(--shadow);
+  font-size: 21px; font-weight: 800; color: var(--ink);
+  cursor: pointer; transition: transform .12s;
+  display: flex; align-items: center; justify-content: center;
+}
+.rbtn:hover { transform: scale(1.1); }
+.rbtn:active { transform: scale(.94); }
+
+/* ---- interaction prompt ---- */
+#prompt {
+  position: absolute; left: 50%; bottom: 128px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 9px;
+  background: rgba(66, 50, 36, 0.88); color: #fff8ec;
+  padding: 8px 18px 8px 10px; border-radius: 999px;
+  font-weight: 700; font-size: 16px; box-shadow: var(--shadow);
+  animation: promptIn .18s ease;
+  white-space: nowrap;
+}
+@keyframes promptIn { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.key {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 26px; height: 26px; padding: 0 6px;
+  background: #f6b73c; color: #4a3413;
+  border-radius: 7px; font-weight: 800; font-size: 14px;
+  box-shadow: 0 2px 0 #c78f22;
+}
+.key.wide { padding: 0 9px; }
+
+/* ---- toasts ---- */
+#toasts {
+  position: absolute; left: 50%; bottom: 186px; transform: translateX(-50%);
+  display: flex; flex-direction: column-reverse; align-items: center; gap: 8px;
+  pointer-events: none !important;
+}
+.toast {
+  background: var(--paper); border-radius: 999px;
+  padding: 7px 18px; font-weight: 700; font-size: 15px;
+  box-shadow: var(--shadow); white-space: nowrap;
+  animation: toastIn .25s cubic-bezier(.34,1.56,.64,1), toastOut .3s ease forwards var(--life, 2.2s);
+}
+.toast.gold { background: #fff3c9; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(12px) scale(.9); } to { opacity: 1; transform: none; } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(-10px); } }
+
+/* ---- dialogue ---- */
+#dialog {
+  position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+  width: min(620px, calc(100vw - 32px));
+  background: var(--paper); border-radius: 20px;
+  box-shadow: var(--shadow); padding: 14px 20px 12px;
+  cursor: pointer;
+  animation: dialogIn .22s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes dialogIn { from { opacity: 0; transform: translate(-50%, 16px) scale(.96); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+#dialog-name { font-weight: 800; font-size: 15px; color: var(--accent); margin-bottom: 2px; }
+#dialog-text { font-size: 18px; font-weight: 600; line-height: 1.45; min-height: 26px; }
+#dialog-hint { text-align: right; font-size: 12px; color: var(--ink-soft); font-weight: 600; margin-top: 4px; }
+
+/* ---- banner ---- */
+#banner {
+  position: absolute; left: 50%; top: 34%; transform: translateX(-50%);
+  background: var(--paper); border-radius: 24px;
+  padding: 18px 36px; text-align: center;
+  font-size: 26px; font-weight: 800;
+  box-shadow: var(--shadow);
+  animation: bannerIn .45s cubic-bezier(.34,1.56,.64,1);
+  z-index: 30;
+}
+#banner small { display: block; font-size: 15px; font-weight: 600; color: var(--ink-soft); margin-top: 4px; }
+@keyframes bannerIn { from { opacity: 0; transform: translate(-50%, -18px) scale(.9); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+
+/* ---- panels ---- */
+.panel {
+  position: absolute; right: 74px; bottom: 74px;
+  width: 250px; background: var(--paper);
+  border-radius: 18px; box-shadow: var(--shadow);
+  padding: 14px 16px; z-index: 25;
+  animation: dialogIn .18s ease;
+}
+.panel-title { font-weight: 800; font-size: 16px; margin-bottom: 8px; }
+#bag-items { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 15px; }
+#bag-items .row { display: flex; justify-content: space-between; }
+#bag-items .empty { color: var(--ink-soft); font-size: 14px; }
+.help-rows { display: flex; flex-direction: column; gap: 8px; font-size: 14px; font-weight: 600; }
+.help-rows .dim { color: var(--ink-soft); font-size: 13px; }
+
+/* ---- confetti ---- */
+.confetti {
+  position: fixed; width: 10px; height: 14px; top: -20px;
+  border-radius: 3px; z-index: 50; pointer-events: none;
+  animation: confettiFall var(--t) linear forwards;
+}
+@keyframes confettiFall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: .9; }
+}
+
+/* ---- touch controls ---- */
+#stick {
+  position: absolute; left: 26px; bottom: 90px;
+  width: 110px; height: 110px; border-radius: 50%;
+  background: rgba(255,253,246,.35); border: 2px solid rgba(255,255,255,.6);
+  z-index: 40;
+}
+#stick-nub {
+  position: absolute; left: 50%; top: 50%;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(255,253,246,.9); box-shadow: var(--shadow);
+  transform: translate(-50%, -50%);
+}
+#touch-e {
+  position: absolute; right: 26px; bottom: 96px;
+  width: 66px; height: 66px; border-radius: 50%; border: none;
+  background: #f6b73c; color: #4a3413; font-size: 26px; font-weight: 800;
+  box-shadow: 0 3px 0 #c78f22, var(--shadow); z-index: 40;
+}
+
+@media (max-width: 720px) {
+  .pill { font-size: 15px; gap: 8px; padding: 6px 14px; }
+  .ebar { width: 56px; }
+  #tasks-card { width: 190px; padding: 10px; }
+  #tasks-list li { font-size: 13px; }
+  #dialog-text { font-size: 16px; }
+}

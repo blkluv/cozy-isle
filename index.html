@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>悠然小岛 Cozy Isle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <canvas id="scene"></canvas>
+
+  <!-- ===== HUD ===== -->
+  <div id="hud">
+    <!-- top center status pill -->
+    <div id="status-pill" class="pill">
+      <span class="stat"><span class="ico">🕐</span><span id="clock">8:00</span></span>
+      <span class="sep"></span>
+      <span class="stat"><span class="ico">🔔</span><span id="bells">65</span></span>
+      <span class="sep"></span>
+      <span class="stat"><span class="ico">🍎</span><span id="apples">0</span></span>
+      <span class="sep"></span>
+      <span class="stat energy"><span class="ico">💛</span><span class="ebar"><span id="efill"></span></span></span>
+    </div>
+
+    <!-- top right tasks -->
+    <div id="tasks-card">
+      <div id="tasks-head">📋 今日任务</div>
+      <ul id="tasks-list"></ul>
+    </div>
+
+    <!-- bottom left villagers -->
+    <div id="villager-bar"></div>
+
+    <!-- bottom right round buttons -->
+    <div id="round-btns">
+      <button class="rbtn" id="btn-bag"  style="--c:#ffd9a8" title="背包">🎒</button>
+      <button class="rbtn" id="btn-map"  style="--c:#c8ecd2" title="小岛地图">🗺️</button>
+      <button class="rbtn" id="btn-reset" style="--c:#ffd2cf" title="回广场">↺</button>
+      <button class="rbtn" id="btn-help" style="--c:#cfe6ff" title="帮助">?</button>
+    </div>
+
+    <!-- interaction prompt -->
+    <div id="prompt" class="hidden"><span class="key">E</span><span id="prompt-text">聊天</span></div>
+
+    <!-- toasts -->
+    <div id="toasts"></div>
+
+    <!-- dialogue box -->
+    <div id="dialog" class="hidden">
+      <div id="dialog-name">Biscuit</div>
+      <div id="dialog-text">…</div>
+      <div id="dialog-hint">E / 点击继续 ▸</div>
+    </div>
+
+    <!-- big center banner -->
+    <div id="banner" class="hidden"></div>
+
+    <!-- backpack panel -->
+    <div id="bag-panel" class="panel hidden">
+      <div class="panel-title">🎒 背包</div>
+      <div id="bag-items"></div>
+    </div>
+
+    <!-- help panel -->
+    <div id="help-panel" class="panel hidden">
+      <div class="panel-title">怎么玩</div>
+      <div class="help-rows">
+        <div><span class="key wide">W A S D</span> 四处走走</div>
+        <div><span class="key wide">拖拽</span> 旋转视角 · <span class="key wide">滚轮</span> 缩放</div>
+        <div><span class="key">E</span> 聊天 · 摇树 · 抛竿 / 收竿</div>
+        <div><span class="key wide">🍎</span> 按 <span class="key">F</span> 吃苹果恢复体力</div>
+        <div class="dim">完成今日所有任务，然后回广场和大家集合 ☀️</div>
+      </div>
+    </div>
+
+    <!-- touch controls -->
+    <div id="stick" class="hidden"><div id="stick-nub"></div></div>
+    <button id="touch-e" class="hidden">E</button>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
